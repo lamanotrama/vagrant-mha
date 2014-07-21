@@ -2,6 +2,7 @@ node percona1 {
 
   $server_id=1
 
+  include yumrepo
   include percona::repository
   include myhosts
   include mha::ssh_keys
@@ -20,6 +21,7 @@ node percona2 {
 
   $server_id=2
 
+  include yumrepo
   include percona::repository
   include myhosts
   include percona::server
@@ -37,6 +39,7 @@ node percona3 {
 
   $server_id=3
 
+  include yumrepo
   include percona::repository
   include myhosts
   include percona::server
