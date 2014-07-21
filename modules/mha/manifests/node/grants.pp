@@ -1,21 +1,27 @@
 class mha::node::grants {
 
   mysql::rights {
-    'all grants percona1':
+    'all grants manager001':
       user     => 'root',
-      host     => 'percona1',
+      host     => 'manager001.mha.lan',
       password => 'percona',
       require  => Service['mysql'];
 
-    'all grants percona2':
+    'all grants node001':
       user     => 'root',
-      host     => 'percona2',
+      host     => 'node001.mha.lan',
       password => 'percona',
       require  => Service['mysql'];
 
-    'all grants percona3':
+    'all grants node002':
       user     => 'root',
-      host     => 'percona3',
+      host     => 'node002.mha.lan',
+      password => 'percona',
+      require  => Service['mysql'];
+
+    'all grants node002':
+      user     => 'root',
+      host     => 'node002.mha.lan',
       password => 'percona',
       require  => Service['mysql'];
   }

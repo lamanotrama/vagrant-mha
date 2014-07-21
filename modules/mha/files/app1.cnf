@@ -9,10 +9,10 @@ manager_workdir=/var/log/masterha/app1
 remote_workdir=/var/log/masterha/app1
 
 [server1]
-hostname=percona1
+hostname=node001.mha.lan
 
 [server2]
-hostname=percona2
+hostname=node002.mha.lan
 
 [server3]
-hostname=percona3
+hostname=node003.mha.lan

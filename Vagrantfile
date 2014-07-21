@@ -48,18 +48,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define :percona1 do |c|
-    c.vm.host_name  = "percona1"
+  config.vm.define :manager001 do |c|
+    c.vm.host_name  = "manager001.mha.dev"
+    define_vbox c, private_ip: '192.168.80.100'
+  end
+
+  config.vm.define :node001 do |c|
+    c.vm.host_name  = "node001.mha.dev"
     define_vbox c, private_ip: '192.168.80.2'
   end
 
-  config.vm.define :percona2 do |c|
-    c.vm.host_name  = "percona2"
+  config.vm.define :node002 do |c|
+    c.vm.host_name  = "node002.mha.dev"
     define_vbox c, private_ip: '192.168.80.3'
   end
 
-  config.vm.define :percona3 do |c|
-    c.vm.host_name  = "percona3"
+  config.vm.define :node003 do |c|
+    c.vm.host_name  = "node003.mha.dev"
     define_vbox c, private_ip: '192.168.80.4'
   end
 end
