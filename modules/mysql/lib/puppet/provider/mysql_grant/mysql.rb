@@ -24,7 +24,7 @@ Puppet::Type.type(:mysql_grant).provide(:mysql) do
 
   desc "Uses mysql as database."
 
-  commands :mysql => '/usr/bin/mysql'
+  commands :mysql      => '/usr/bin/mysql'
   commands :mysqladmin => '/usr/bin/mysqladmin'
 
   def mysql_flush 
@@ -46,7 +46,7 @@ Puppet::Type.type(:mysql_grant).provide(:mysql) do
           :type => :db,
           :user => matches[0],
           :host => matches[1],
-          :db => matches[3]
+          :db   => matches[3]
         }
     end
   end
@@ -71,7 +71,7 @@ Puppet::Type.type(:mysql_grant).provide(:mysql) do
   def destroy
     mysql "mysql", "-e", "REVOKE ALL ON '%s'.* FROM '%s@%s'" % [ @resource[:privileges], @resource[:database], @resource[:name], @resource[:host] ]
   end
-  
+
   def row_exists?
     name = split_name(@resource[:name])
     fields = [:user, :host]
@@ -142,7 +142,7 @@ Puppet::Type.type(:mysql_grant).provide(:mysql) do
     if privs[0] == :all 
       privs = all_privs
     end
-  
+
     # puts "stmt:", stmt
     set = all_privs.collect do |p| "%s = '%s'" % [p, privs.include?(p) ? 'Y' : 'N'] end.join(', ')
     # puts "set:", set

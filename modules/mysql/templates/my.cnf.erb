@@ -23,8 +23,8 @@ default-character-set=UTF8
 
 # The MySQL server
 [mysqld]
-port    = 3306
-socket    = /var/lib/mysql/mysql.sock
+port   = 3306
+socket = /var/lib/mysql/mysql.sock
 skip-locking
 skip_name_resolve
 
@@ -36,46 +36,43 @@ set-variable  = record_buffer=1M
 set-variable  = thread_cache=8
 # Try number of CPU's*2 for thread_concurrency
 set-variable  = thread_concurrency=8
-set-variable    = lower_case_table_names=1
-server-id = <%= mysql_serverid %>
-log-error = /var/log/mysql/error.log
+set-variable  = lower_case_table_names=1
+server-id     = <%= @mysql_serverid %>
+log-error     = /var/log/mysql/error.log
 
-relay-log = /var/lib/mysql/<%= hostname %>-A-relay.log
-relay-log-index = /var/lib/mysql/<%= hostname %>-relay.index
-relay-log-info-file = /var/lib/mysql/<%= hostname %>-relay.info
+relay-log           = /var/lib/mysql/<%= @hostname %>-A-relay.log
+relay-log-index     = /var/lib/mysql/<%= @hostname %>-relay.index
+relay-log-info-file = /var/lib/mysql/<%= @hostname %>-relay.info
 
-log-bin                 = /var/lib/mysql/<%= hostname %>-bin.log
-log-bin-index           = /var/lib/mysql/<%= hostname %>-bin.index
+log-bin             = /var/lib/mysql/<%= @hostname %>-bin.log
+log-bin-index       = /var/lib/mysql/<%= @hostname %>-bin.index
 
 #replicate-ignore-db=mysql,puppet_dashboard,puppet_dashboard_test
-replicate-ignore-db=<%= replicate_ignore_db %>
+replicate-ignore-db = <%= @replicate_ignore_db %>
 
-auto_increment_increment      = 10
-auto_increment_offset         = <%= mysql_serverid %>
+auto_increment_increment = 10
+auto_increment_offset    = <%= @mysql_serverid %>
 
-innodb_buffer_pool_size = 512M
-innodb_flush_log_at_trx_commit=2
+innodb_buffer_pool_size        = 512M
+innodb_flush_log_at_trx_commit = 2
 
-slave_compressed_protocol=1
+slave_compressed_protocol = 1
 
 default-storage-engine = InnoDB
 
 slave_load_tmpdir = /var/lib/mysql/.tmp
 tmpdir = /var/lib/mysql/.tmp
 
-
-
-
-character-set-server=utf8
-character-set-filesystem=UTF8
-collation-server=utf8_general_ci
-default-character-set=UTF8
+character-set-server     = utf8
+character-set-filesystem = UTF8
+collation-server         = utf8_general_ci
+default-character-set    = UTF8
 
 [mysqldump]
 quick
-set-variable  = max_allowed_packet=16M
+set-variable = max_allowed_packet=16M
 
-default-character-set=UTF8 
+default-character-set = UTF8 
 
 [mysql]
 no-auto-rehash
@@ -84,10 +81,10 @@ no-auto-rehash
 
 
 [myisamchk]
-set-variable  = key_buffer=128M
-set-variable  = sort_buffer=128M
-set-variable  = read_buffer=2M
-set-variable  = write_buffer=2M
+set-variable = key_buffer=128M
+set-variable = sort_buffer=128M
+set-variable = read_buffer=2M
+set-variable = write_buffer=2M
 
 [mysqlhotcopy]
 interactive-timeout

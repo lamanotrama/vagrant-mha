@@ -1,4 +1,5 @@
 class mha::node::package {
+
   package {
     'mha4mysql-node':
       ensure   => installed,
@@ -12,4 +13,5 @@ class mha::node::package {
       ensure   => latest,
       require  => Class['Percona::Shared'],
   }
+
 }

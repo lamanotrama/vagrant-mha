@@ -1,11 +1,12 @@
 require 'puppet/provider/package'
 
-Puppet::Type.type(:mysql_database).provide(:mysql,
-    :parent => Puppet::Provider::Package) do
-
+Puppet::Type.type(:mysql_database).provide(
+  :mysql,
+  :parent => Puppet::Provider::Package
+) do
   desc "Use mysql as database."
   commands :mysqladmin => '/usr/bin/mysqladmin'
-  commands :mysql => '/usr/bin/mysql'
+  commands :mysql      => '/usr/bin/mysql'
 
   # retrieve the current set of mysql users
   def self.instances
@@ -40,6 +41,7 @@ Puppet::Type.type(:mysql_database).provide(:mysql,
   def create
     mysqladmin "create", @resource[:name]
   end
+
   def destroy
     mysqladmin "-f", "drop", @resource[:name]
   end

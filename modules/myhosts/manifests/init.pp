@@ -1,4 +1,5 @@
 class myhosts {
+
   host {
     'percona1':
       ensure  => 'present',
@@ -10,4 +11,5 @@ class myhosts {
       ensure  => 'present',
       ip      => '192.168.80.4';
   }
+
 }

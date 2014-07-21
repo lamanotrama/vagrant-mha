@@ -1,9 +1,10 @@
 require 'puppet/provider/package'
 
-Puppet::Type.type(:mysql_user).provide(:mysql,
-    # T'is funny business, this code is quite generic
-    :parent => Puppet::Provider::Package) do
-
+Puppet::Type.type(:mysql_user).provide(
+  :mysql,
+  # T'is funny business, this code is quite generic
+  :parent => Puppet::Provider::Package
+) do
   desc "Use mysql as database."
   commands :mysql => '/usr/bin/mysql'
   commands :mysqladmin => '/usr/bin/mysqladmin'
@@ -24,9 +25,9 @@ Puppet::Type.type(:mysql_user).provide(:mysql,
   def self.query_line_to_hash(line)
     fields = line.chomp.split(/\t/)
     {
-      :name => fields[0],
+      :name          => fields[0],
       :password_hash => fields[1],
-      :ensure => :present
+      :ensure        => :present
     }
   end
 

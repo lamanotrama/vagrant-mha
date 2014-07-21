@@ -10,7 +10,10 @@ node percona1 {
   include percona::shared
   include mha::manager
 
-        Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node'] -> Class['Mha::Manager']
+  Class['Percona::Shared']
+  -> Class['Percona::Server']
+  -> Class['Mha::Node']
+  -> Class['Mha::Manager']
 }
 
 node percona2 {
@@ -25,7 +28,9 @@ node percona2 {
   include percona::shared
   include mha::node::slave
 
-  Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node']
+  Class['Percona::Shared']
+  -> Class['Percona::Server']
+  -> Class['Mha::Node']
 }
 
 node percona3 {
@@ -40,5 +45,7 @@ node percona3 {
   include percona::shared
   include mha::node::slave
 
-  Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node']
+  Class['Percona::Shared']
+  -> Class['Percona::Server']
+  -> Class['Mha::Node']
 }
