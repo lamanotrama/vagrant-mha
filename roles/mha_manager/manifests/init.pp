@@ -1,12 +1,11 @@
 class mha_manager {
 
-  include ::yumrepo
-  include ::myhosts
+  class { 'base': stage => 'first' }
+
+  include ::percona::client
+  include ::percona::shared
+
   include ::mha::ssh_keys
   include ::mha::manager
-
-  pacage { 'mysql':
-    ensure => installed,
-  }
 
 }

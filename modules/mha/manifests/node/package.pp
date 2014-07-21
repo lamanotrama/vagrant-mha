@@ -10,8 +10,8 @@ class mha::node::package {
 
   package {
     'perl-DBD-MySQL':
-      ensure   => latest,
-      require  => Class['Percona::Shared'],
+      ensure  => latest,
+      require => Package['MySQL-Shared'],
   }
 
 }

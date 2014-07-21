@@ -1,11 +1,12 @@
 class mha_node {
 
-  include ::yumrepo
-  include ::percona::repository
-  include ::myhosts
-  include ::mha::ssh_keys
+  class { 'base': stage => 'first' }
+
   include ::percona::server
+  include ::percona::client
   include ::percona::shared
+
+  include ::mha::ssh_keys
   include ::mha::node
 
   Class['::Percona::Shared']

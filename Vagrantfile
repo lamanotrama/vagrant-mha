@@ -11,6 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell do |shell|
     shell.inline = <<-'SCRIPT'
+      # mysql-libsが入ってるとconflictするので抜いとく
+      rpm -qi mysql-libs && rpm -e --nodeps mysql-libs
       # cent6で名前解決が遅いの回避
       (tail -n 1 /etc/resolv.conf | egrep 'options single-request-reopen' /etc/resolv.conf) ||
           echo 'options single-request-reopen' >> /etc/resolv.conf
@@ -30,7 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   def define_vbox(c, private_ip: nil, memory: 256, cpu: 2)
-    c.vm.network :private_network, ip: opt[:private_ip] if private_ip
+    c.vm.network :private_network, ip: private_ip if private_ip
 
     # ref http://vboxmania.net/content/vboxmanage-modifyvm%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89
     c.vm.provider :virtualbox do |vbox|

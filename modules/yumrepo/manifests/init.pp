@@ -1,6 +1,14 @@
 class yumrepo {
 
   yumrepo {
+    'base':
+      name     => "base",
+      exclude  => 'mysql*';
+
+    'updates':
+      name     => "updates",
+      exclude  => 'mysql*';
+
     'epel':
       name       => "epel",
       descr      => 'epel repo',

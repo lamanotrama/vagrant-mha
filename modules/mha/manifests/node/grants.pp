@@ -4,26 +4,22 @@ class mha::node::grants {
     'all grants manager001':
       user     => 'root',
       host     => 'manager001.mha.lan',
-      password => 'percona',
-      require  => Service['mysql'];
+      password => 'percona';
 
     'all grants node001':
       user     => 'root',
       host     => 'node001.mha.lan',
-      password => 'percona',
-      require  => Service['mysql'];
+      password => 'percona';
 
     'all grants node002':
       user     => 'root',
       host     => 'node002.mha.lan',
-      password => 'percona',
-      require  => Service['mysql'];
+      password => 'percona';
 
-    'all grants node002':
+    'all grants node003':
       user     => 'root',
-      host     => 'node002.mha.lan',
-      password => 'percona',
-      require  => Service['mysql'];
+      host     => 'node003.mha.lan',
+      password => 'percona';
   }
 
   mysql::rights {
@@ -34,8 +30,7 @@ class mha::node::grants {
       priv     => [
         'repl_client_priv',
         'repl_slave_priv',
-      ],
-      require  => Service['mysql'],
+      ];
   }
 
 }

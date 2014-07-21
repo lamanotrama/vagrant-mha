@@ -6,10 +6,4 @@ class percona::server::config {
     notify  => Service['mysql'],
   }
 
-  exec { 'disable-selinux':
-    path    => ['/usr/bin','/bin'],
-    command => 'echo 0 >/selinux/enforce',
-    unless  => 'grep 0 /selinux/enforce',
-  }
-
 }

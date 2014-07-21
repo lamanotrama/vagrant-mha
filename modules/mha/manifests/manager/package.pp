@@ -1,5 +1,7 @@
 class mha::manager::package {
 
+  include mha::node::package
+
   $pack = [
     'perl-Config-Tiny',
     'perl-Log-Dispatch',
@@ -15,7 +17,10 @@ class mha::manager::package {
     ensure   => installed,
     provider => rpm,
     source   => '/vagrant/mha4mysql-manager-0.54-0.el6.noarch.rpm',
-    require  => Package[$pack],
+    require  => [
+      Package[$pack],
+      Class['mha::node::package'],
+    ],
   }
 
   file {

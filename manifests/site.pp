@@ -1,3 +1,10 @@
+stage { 'first': }
+stage { 'last': }
+
+Stage['first']
+-> Stage['main']
+-> Stage['last']
+
 node 'manager001.mha.dev' {
   include mha_manager
 }
