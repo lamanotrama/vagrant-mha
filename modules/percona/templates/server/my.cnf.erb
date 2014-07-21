@@ -1,16 +1,20 @@
 [mysqld]
-datadir=/var/lib/mysql
-user=mysql
-log_error=error.log
-binlog_format=ROW
-innodb_locks_unsafe_for_binlog=1
-innodb_autoinc_lock_mode=2
-innodb_log_file_size=64M
-log_slave_update=1
+server_id = <%= @server_id %>
+
+datadir = /var/lib/mysql
+user    = mysql
+
+log_error = error.log
+
 log-bin
-relay_log_purge=0
-server_id=<%=server_id%>
-replicate-ignore-db=mysql
+binlog_format    = ROW
+log_slave_update = 1
+relay_log_purge  = 0
+replicate-ignore-db = mysql
+
+innodb_locks_unsafe_for_binlog = 1
+innodb_autoinc_lock_mode       = 2
+innodb_log_file_size           = 64M
 
 [mysql]
-prompt="<%=hostname %> mysql> "
+prompt="<%= @hostname %> mysql> "

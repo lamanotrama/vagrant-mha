@@ -1,5 +1,6 @@
 class mha::manager {
-        include mha::manager::package
-	include mha::manager::config
-}
 
+  include mha::manager::package
+  include mha::manager::config
+
+}

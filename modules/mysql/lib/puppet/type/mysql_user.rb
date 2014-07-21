@@ -2,6 +2,7 @@
 Puppet::Type.newtype(:mysql_user) do
   @doc = "Manage a database user."
   ensurable
+
   newparam(:name) do
     desc "The name of the user. This uses the 'username@hostname' form."
 

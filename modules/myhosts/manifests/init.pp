@@ -1,13 +1,21 @@
 class myhosts {
-	host {
-		"percona1":
-			ensure	=> "present",
-			ip 	=> "192.168.80.2";
-		"percona2":
-			ensure	=> "present",
-			ip	=> "192.168.80.3";
-		"percona3":
-			ensure	=> "present",
-			ip	=> "192.168.80.4";
-	}
+
+  host {
+    'manager001.mha.lan':
+      ensure  => 'present',
+      ip      => '192.168.80.100';
+
+    'node001.mha.lan':
+      ensure  => 'present',
+      ip      => '192.168.80.2';
+
+    'node002.mha.lan':
+      ensure  => 'present',
+      ip      => '192.168.80.3';
+
+    'node003.mha.lan':
+      ensure  => 'present',
+      ip      => '192.168.80.4';
+  }
+
 }

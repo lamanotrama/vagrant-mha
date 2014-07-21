@@ -1,45 +1,25 @@
-node percona1 {
+stage { 'first': }
+stage { 'last': }
 
-	$server_id=1
+Stage['first']
+-> Stage['main']
+-> Stage['last']
 
-	include percona::repository
-	include myhosts
-	include mha::ssh_keys
-	include mha::node
-	include percona::server
-	include percona::shared
-	include mha::manager
-
-        Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node'] -> Class['Mha::Manager']
+node 'manager001.mha.dev' {
+  include mha_manager
 }
 
-node percona2 {
-
-	$server_id=2
-
-	include percona::repository
-	include myhosts
-	include percona::server
-	include mha::ssh_keys
-	include mha::node
-	include percona::shared
-	include mha::node::slave
-
-	Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node']
+node 'node001.mha.dev' {
+  $server_id=1
+  include mha_node::master
 }
 
-node percona3 {
-
-	$server_id=3
-
-	include percona::repository
-	include myhosts
-	include percona::server
-	include mha::ssh_keys
-	include mha::node
-	include percona::shared
-	include mha::node::slave
-
-	Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node']
+node 'node002.mha.dev' {
+  $server_id=2
+  include mha_node::slave
 }
 
+node 'node003.mha.dev' {
+  $server_id=3
+  include mha_node::slave
+}

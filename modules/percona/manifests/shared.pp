@@ -1,15 +1,23 @@
 class percona::shared {
 
-	package {	
-	 	'mysql-libs':
-                        ensure => "absent";
+  include percona::repository
 
-		'Percona-Server-shared-55':
-			require => Package['Percona-Server-shared-compat'],
-			ensure  => installed;
+  package {
+    'mysql-libs':
+      ensure => 'absent';
 
-		'Percona-Server-shared-compat':
-                        require => [ Yumrepo['percona'], Package['mysql-libs'], Package['MySQL-client'] ],
-			ensure  => installed
-	}
+    'Percona-Server-shared-55':
+      ensure  => installed,
+      alias   => 'MySQL-Shared',
+      require => Package['Percona-Server-shared-compat'];
+
+    'Percona-Server-shared-compat':
+      ensure  => installed,
+      require => [
+        Class['percona::repository'],
+        Package['mysql-libs'],
+        Package['MySQL-client'],
+      ];
+  }
+
 }
