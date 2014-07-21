@@ -3,9 +3,11 @@
 # vi: set ft=ruby :
 
 Vagrant::Config.run do |config|
+  config.vm.box     = "CentOS6.5-x86_64"
+  config.vm.box_url = "https://s3-ap-northeast-1.amazonaws.com/paperboy-vagrant-boxes/CentOS-6.5-x86_64-minimal.box"
+  config.vm.synced_folder ".", "/vagrant"
+
   config.vm.define :percona1 do |c|
-    c.vm.box        = "centos63"
-    c.vm.box_url    = "http://dl.dropbox.com/u/11697684/centos63.box"
     c.vm.host_name  = "percona1"
     c.ssh.max_tries = 100
     c.vm.customize ["modifyvm", :id, "--memory", "256"]
@@ -21,9 +23,7 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :percona2 do |c|
-    c.vm.box        = "centos63"
     c.vm.host_name  = "percona2"
-    c.vm.box_url    = "http://dl.dropbox.com/u/11697684/centos63.box"
     c.ssh.max_tries = 100
     c.vm.customize ["modifyvm", :id, "--memory", "256"]
     c.vm.network :hostonly, "192.168.80.3"
@@ -38,9 +38,7 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :percona3 do |c|
-    c.vm.box        = "centos63"
     c.vm.host_name  = "percona3"
-    c.vm.box_url    = "http://dl.dropbox.com/u/11697684/centos63.box"
     c.ssh.max_tries = 100
     c.vm.customize ["modifyvm", :id, "--memory", "256"]
     c.vm.network :hostonly, "192.168.80.4"
