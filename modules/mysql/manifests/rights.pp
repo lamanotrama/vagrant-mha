@@ -27,7 +27,7 @@ define mysql::rights(
   $priv     = 'all'
 ) {
 
-  if $::mysql_exists == true and $ensure == 'present' {
+  if $::mysql_exists == 'true' and $ensure == 'present' {
     if ! defined(Mysql_user ["${user}@${host}"]) {
       mysql_user { "${user}@${host}":
         password_hash => mysql_password($password),
