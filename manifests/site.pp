@@ -42,4 +42,3 @@ node percona3 {
 
   Class['Percona::Shared'] -> Class['Percona::Server'] -> Class['Mha::Node']
 }
-

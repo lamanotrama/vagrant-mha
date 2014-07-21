@@ -1,8 +1,8 @@
 class percona::shared {
 
-  package { 
+  package {
     'mysql-libs':
-                        ensure => "absent";
+                        ensure => 'absent';
 
     'Percona-Server-shared-55':
       require => Package['Percona-Server-shared-compat'],
@@ -10,6 +10,6 @@ class percona::shared {
 
     'Percona-Server-shared-compat':
                         require => [ Yumrepo['percona'], Package['mysql-libs'], Package['MySQL-client'] ],
-      ensure  => installed
+      ensure                    => installed
   }
 }

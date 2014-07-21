@@ -1,11 +1,11 @@
-class percona::server::service ($ensure="running") {
+class percona::server::service ($ensure='running') {
 
 
   service {
-    "mysql":
-      enable  => true,
+    'mysql':
+      enable                    => true,
                         ensure  => $ensure,
-      require => Package['MySQL-server'],
+      require                   => Package['MySQL-server'],
   }
 
 }

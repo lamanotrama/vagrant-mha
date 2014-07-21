@@ -9,10 +9,10 @@ class mha::ssh_keys {
 
   file {
     '/root/.ssh/id_rsa':
-      owner => 'root',
-      group => 'root',
-      mode  => 0600,
-      source  => "puppet:///modules/mha/id_rsa",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      source  => 'puppet:///modules/mha/id_rsa',
       require => Ssh_authorized_key['mha_ssh_pub']
       
   }
