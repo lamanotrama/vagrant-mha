@@ -15,30 +15,30 @@
 
 # The following options will be passed to all MySQL clients
 [client]
-port		= 3306
-socket		= /var/lib/mysql/mysql.sock
+port    = 3306
+socket    = /var/lib/mysql/mysql.sock
 default-character-set=UTF8
 
 # Here follows entries for some specific programs
 
 # The MySQL server
 [mysqld]
-port		= 3306
-socket		= /var/lib/mysql/mysql.sock
+port    = 3306
+socket    = /var/lib/mysql/mysql.sock
 skip-locking
 skip_name_resolve
 
-set-variable	= max_allowed_packet=1M
-set-variable	= table_cache=256
-set-variable	= sort_buffer=1M
-set-variable	= record_buffer=1M
-#set-variable	= myisam_sort_buffer_size=64M
-set-variable	= thread_cache=8
+set-variable  = max_allowed_packet=1M
+set-variable  = table_cache=256
+set-variable  = sort_buffer=1M
+set-variable  = record_buffer=1M
+#set-variable = myisam_sort_buffer_size=64M
+set-variable  = thread_cache=8
 # Try number of CPU's*2 for thread_concurrency
-set-variable	= thread_concurrency=8
+set-variable  = thread_concurrency=8
 set-variable    = lower_case_table_names=1
-server-id	= <%= mysql_serverid %>
-log-error	= /var/log/mysql/error.log
+server-id = <%= mysql_serverid %>
+log-error = /var/log/mysql/error.log
 
 relay-log = /var/lib/mysql/<%= hostname %>-A-relay.log
 relay-log-index = /var/lib/mysql/<%= hostname %>-relay.index
@@ -53,7 +53,7 @@ replicate-ignore-db=<%= replicate_ignore_db %>
 auto_increment_increment      = 10
 auto_increment_offset         = <%= mysql_serverid %>
 
-innodb_buffer_pool_size	= 512M
+innodb_buffer_pool_size = 512M
 innodb_flush_log_at_trx_commit=2
 
 slave_compressed_protocol=1
@@ -73,7 +73,7 @@ default-character-set=UTF8
 
 [mysqldump]
 quick
-set-variable	= max_allowed_packet=16M
+set-variable  = max_allowed_packet=16M
 
 default-character-set=UTF8 
 
@@ -84,10 +84,10 @@ no-auto-rehash
 
 
 [myisamchk]
-set-variable	= key_buffer=128M
-set-variable	= sort_buffer=128M
-set-variable	= read_buffer=2M
-set-variable	= write_buffer=2M
+set-variable  = key_buffer=128M
+set-variable  = sort_buffer=128M
+set-variable  = read_buffer=2M
+set-variable  = write_buffer=2M
 
 [mysqlhotcopy]
 interactive-timeout

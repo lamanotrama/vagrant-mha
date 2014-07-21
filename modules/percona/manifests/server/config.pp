@@ -4,7 +4,7 @@ class percona::server::config {
                 "/etc/my.cnf":
                         ensure  => present,
                         content => template("percona/server/my.cnf.erb"),
-			notify  => Service['mysql'],
+      notify  => Service['mysql'],
         }
 
         exec {

@@ -32,16 +32,16 @@ define mysql::rights($database="", $user, $password, $host="localhost", $ensure=
     }
     
     if $database == "" {
-    	mysql_grant { "${user}@${host}":
-      		privileges => $priv,
-      		#require => File["/root/.my.cnf"],
-    	}
+      mysql_grant { "${user}@${host}":
+          privileges => $priv,
+          #require => File["/root/.my.cnf"],
+      }
     }
     else {
-    	mysql_grant { "${user}@${host}/${database}":
-      		privileges => $priv,
-      		#require => File["/root/.my.cnf"],
-    	}
+      mysql_grant { "${user}@${host}/${database}":
+          privileges => $priv,
+          #require => File["/root/.my.cnf"],
+      }
     }
   }
 

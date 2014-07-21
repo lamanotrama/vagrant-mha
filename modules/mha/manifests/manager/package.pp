@@ -11,15 +11,15 @@ class mha::manager::package {
                         ensure   => installed,
                         provider => rpm,
                         source   => "/vagrant/mha4mysql-manager-0.54-0.el6.noarch.rpm",
-			require  => [ Package[$pack], Package['mha4mysql-node'] ]
+      require  => [ Package[$pack], Package['mha4mysql-node'] ]
         }
 
 
-	file { 
-		'/usr/lib64/perl5/vendor_perl/MHA':
-			ensure  => link,
-  			target  => "/usr/lib/perl5/vendor_perl/MHA/",
-			require => Package['mha4mysql-manager'],
-	}
+  file { 
+    '/usr/lib64/perl5/vendor_perl/MHA':
+      ensure  => link,
+        target  => "/usr/lib/perl5/vendor_perl/MHA/",
+      require => Package['mha4mysql-manager'],
+  }
 
 }
