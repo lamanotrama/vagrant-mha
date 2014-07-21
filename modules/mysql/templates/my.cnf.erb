@@ -40,7 +40,7 @@ set-variable  = lower_case_table_names=1
 server-id     = <%= @mysql_serverid %>
 log-error     = /var/log/mysql/error.log
 
-relay-log           = /var/lib/mysql/<%= @hostname %>-A-relay.log
+relay-log           = /var/lib/mysql/<%= @hostname %>-relay.log
 relay-log-index     = /var/lib/mysql/<%= @hostname %>-relay.index
 relay-log-info-file = /var/lib/mysql/<%= @hostname %>-relay.info
 

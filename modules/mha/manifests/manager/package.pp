@@ -7,15 +7,15 @@ class mha::manager::package {
     'perl-Time-HiRes',
   ]
 
-  package { $pack: }
-
-  Package { ensure  => 'installed' }
+  package { $pack:
+    ensure  => 'installed',
+  }
 
   package { 'mha4mysql-manager':
     ensure   => installed,
     provider => rpm,
     source   => '/vagrant/mha4mysql-manager-0.54-0.el6.noarch.rpm',
-    require  => [ Package[$pack], Package['mha4mysql-node'] ]
+    require  => Package[$pack],
   }
 
   file {
