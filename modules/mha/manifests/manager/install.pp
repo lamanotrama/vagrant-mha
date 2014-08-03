@@ -12,7 +12,7 @@ class mha::manager::install {
   ]
 
   package { $perl_pkgs:
-    ensure  => 'installed',
+    ensure  => installed,
   }
 
   package { 'mha4mysql-manager':
@@ -23,13 +23,6 @@ class mha::manager::install {
       Package[$perl_pkgs],
       Class['mha::node::install'],
     ],
-  }
-
-  file {
-    '/usr/lib64/perl5/vendor_perl/MHA':
-      ensure  => link,
-      target  => '/usr/lib/perl5/vendor_perl/MHA/',
-      require => Package['mha4mysql-manager'],
   }
 
 }
