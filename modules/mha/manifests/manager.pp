@@ -1,6 +1,6 @@
 class mha::manager {
 
-  include mha::manager::package
-  include mha::manager::config
+  class { 'mha::manager::install': }
+  -> class { 'mha::manager::config': }
 
 }

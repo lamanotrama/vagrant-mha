@@ -1,25 +1,27 @@
-class mha::manager::package {
+class mha::manager::install {
 
-  include mha::node::package
+  $manager_version = '0.55-0'
 
-  $pack = [
+  include mha::node::install
+
+  $perl_pkgs = [
     'perl-Config-Tiny',
     'perl-Log-Dispatch',
     'perl-Parallel-ForkManager',
     'perl-Time-HiRes',
   ]
 
-  package { $pack:
+  package { $perl_pkgs:
     ensure  => 'installed',
   }
 
   package { 'mha4mysql-manager':
     ensure   => installed,
     provider => rpm,
-    source   => '/vagrant/mha4mysql-manager-0.54-0.el6.noarch.rpm',
+    source   => "https://mysql-master-ha.googlecode.com/files/mha4mysql-manager-${manager_version}.el6.noarch.rpm",
     require  => [
-      Package[$pack],
-      Class['mha::node::package'],
+      Package[$perl_pkgs],
+      Class['mha::node::install'],
     ],
   }
 
