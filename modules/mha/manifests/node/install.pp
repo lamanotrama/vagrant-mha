@@ -3,7 +3,6 @@ class mha::node::install {
   $node_version = '0.54-0'
 
   package { 'perl-DBD-MySQL':
-    ensure  => latest,
     require => Package['MySQL-Shared'],
   }
 
