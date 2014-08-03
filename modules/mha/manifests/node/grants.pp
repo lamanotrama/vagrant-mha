@@ -1,25 +1,28 @@
-class mha::node::grants {
+class mha::node::grants (
+  $mha_user     = hiera('mha::user', 'root'),
+  $mha_password = hiera('mha::password')
+) {
 
   mysql::rights {
     'all grants manager001':
-      user     => 'root',
+      user     => $mha_user,
       host     => 'manager001.mha.lan',
-      password => 'percona';
+      password => $mha_password;
 
     'all grants node001':
-      user     => 'root',
+      user     => $mha_user,
       host     => 'node001.mha.lan',
-      password => 'percona';
+      password => $mha_password;
 
     'all grants node002':
-      user     => 'root',
+      user     => $mha_user,
       host     => 'node002.mha.lan',
-      password => 'percona';
+      password => $mha_password;
 
     'all grants node003':
-      user     => 'root',
+      user     => $mha_user,
       host     => 'node003.mha.lan',
-      password => 'percona';
+      password => $mha_password;
   }
 
   mysql::rights {

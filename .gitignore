@@ -3,3 +3,8 @@
 .vagrant
 .bundle
 vendor/bundle/
+
+# hiera
+reports/
+state/
+clientbucket/

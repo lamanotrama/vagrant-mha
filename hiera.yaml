@@ -1,0 +1,9 @@
+---
+:backends: yaml
+:yaml:
+  :datadir: "%{::settings::vardir}/hiera"
+:hierarchy:
+  - common
+  - "%{::environment}"
+  - "%{::environment}/secret"
+:logger: console

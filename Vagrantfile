@@ -25,10 +25,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.manifest_file  = "site.pp"
-    puppet.module_path    = ["modules", "roles"]
-    puppet.options        = "--verbose"
+    puppet.manifests_path    = "manifests"
+    puppet.manifest_file     = "site.pp"
+    puppet.module_path       = ["modules", "roles"]
+    puppet.options           = "--verbose --environment development"
+    puppet.hiera_config_path = "hiera.yaml"
+
+    options = ["--verbose", "--environment development", "--vardir /vagrant"]
+    options << "--noop"  if ENV['NOOP']
+    options << "--debug" if ENV['DEBUG']
+    puppet.options = options
   end
 
   def define_vbox(c, private_ip: nil, memory: 256, cpu: 2)
