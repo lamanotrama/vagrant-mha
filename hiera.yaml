@@ -5,5 +5,5 @@
 :hierarchy:
   - common
   - "%{::environment}"
-  - "%{::environment}/secret"
+  - "%{::environment}_secret"
 :logger: console

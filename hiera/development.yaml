@@ -1,0 +1,6 @@
+---
+mha::manager: manager001.mha.lan
+mha::nodes:
+  - node001.mha.lan
+  - node002.mha.lan
+  - node003.mha.lan
