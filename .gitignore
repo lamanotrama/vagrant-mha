@@ -8,3 +8,8 @@ vendor/bundle/
 reports/
 state/
 clientbucket/
+
+# librarian-puppet
+.librarian
+.tmp
+vendor
