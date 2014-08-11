@@ -1,5 +1,5 @@
 class mha::node (
-  $version = '0.54-0',
+  $version = $mha::params::node_version,
 
   $user = 'root',
   $password,
@@ -9,9 +9,9 @@ class mha::node (
 
   $nodes,
   $manager,
-) {
+) inherits mha::params {
 
-  class { 'mha::node::install': }
+  class { 'mha::node::install': version => $version }
   -> class { 'mha::node::grants': }
 
   Service['mysql']
