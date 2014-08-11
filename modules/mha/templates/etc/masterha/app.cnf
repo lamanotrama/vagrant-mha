@@ -1,0 +1,17 @@
+[server default]
+ssh_user=root
+
+user=<%= @user %>
+password=<%= @password %>
+
+repl_user=<%= @repl_user %>
+repl_password=<%= @repl_password %>
+
+manager_workdir=/var/log/masterha/<%= @name %>
+remote_workdir=/var/log/masterha/<%= @name %>
+
+<% @nodes.each_with_index do |node, i| -%>
+[server<%= i + 1 %>]
+hostname=<%= node %>
+
+<% end -%>
