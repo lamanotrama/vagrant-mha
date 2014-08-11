@@ -1,10 +1,12 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
+    proletaryo-supervisor (0.4.0)
     puppetlabs-mysql (2.3.1)
       puppetlabs-stdlib (>= 3.2.0)
     puppetlabs-stdlib (4.3.2)
 
 DEPENDENCIES
+  proletaryo-supervisor (>= 0)
   puppetlabs-mysql (>= 0)
 
