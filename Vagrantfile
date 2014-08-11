@@ -5,6 +5,13 @@
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.4.0"
 
+warn <<EOT unless File.directory?(".librarian")
+Please run:
+  gem install librarian-puppet
+  librarian-puppet install --path vendor
+
+EOT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box     = "CentOS6.5-x86_64"
   config.vm.box_url = "https://s3-ap-northeast-1.amazonaws.com/paperboy-vagrant-boxes/CentOS-6.5-x86_64-minimal.box"
