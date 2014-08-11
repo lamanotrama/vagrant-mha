@@ -1,7 +1,9 @@
 class mha::manager::install {
 
-  class { 'mha::node::install':
-    version => $mha::manager::node_version,
+  if !defined(Class['mha::node::install']) {
+    class { 'mha::node::install':
+      version => $mha::manager::node_version,
+    }
   }
 
   $suffix = mha_pkg_suffix()
