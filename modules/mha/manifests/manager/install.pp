@@ -1,6 +1,7 @@
 class mha::manager::install {
 
   $manager_version = '0.55-0'
+  $suffix = mha_pkg_suffix()
 
   $perl_pkgs = [
     'perl-DBD-MySQL',
@@ -21,7 +22,7 @@ class mha::manager::install {
   package { 'mha4mysql-manager':
     ensure   => installed,
     provider => rpm,
-    source   => "https://mysql-master-ha.googlecode.com/files/mha4mysql-manager-${manager_version}.el6.noarch.rpm",
+    source   => "https://mysql-master-ha.googlecode.com/files/mha4mysql-manager-${manager_version}${suffix}",
     require  => [
       Package[$perl_pkgs],
     ],
