@@ -1,4 +1,6 @@
 class mha::node (
+  $version = '0.54-0',
+
   $user = 'root',
   $password,
 
