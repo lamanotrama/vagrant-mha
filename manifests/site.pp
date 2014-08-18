@@ -10,16 +10,27 @@ node 'manager001.mha.dev' {
 }
 
 node 'node001.mha.dev' {
-  $server_id=1
-  include mha_node::master
+  $server_id = 1
+  include mha_node
 }
 
 node 'node002.mha.dev' {
-  $server_id=2
-  include mha_node::slave
+  $server_id = 2
+  include mha_node
+
+  # mater_hostは本来不定なので、本番では不要
+  class { 'mha_node::start_slave':
+    master  => 'node001.mha.lan',
+    require => Class['mha_node'],
+  }
 }
 
 node 'node003.mha.dev' {
-  $server_id=3
-  include mha_node::slave
+  $server_id = 3
+  include mha_node
+
+  class { 'mha_node::start_slave':
+    master  => 'node001.mha.lan',
+    require => Class['mha_node'],
+  }
 }
