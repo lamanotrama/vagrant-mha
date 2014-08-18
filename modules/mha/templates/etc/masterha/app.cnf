@@ -12,6 +12,9 @@ remote_workdir=/var/log/masterha/<%= @name %>
 
 <% @nodes.each_with_index do |node, i| -%>
 [server<%= i + 1 %>]
-hostname=<%= node %>
+hostname=<%= node.delete('hostname') %>
+<% node.each do |key,val| -%>
+<%= key %>=<%= val %>
+<% end -%>
 
 <% end -%>

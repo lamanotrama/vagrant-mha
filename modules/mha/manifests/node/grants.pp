@@ -1,10 +1,13 @@
 class mha::node::grants {
+
+  $node_hostnames = $mha::node::nodes.collect |$v| { $v['hostname'] }
+
   mha::node::grants::admin {
     $mha::node::manager:
       user     => $mha::node::user,
       password => $mha::node::password;
 
-    $mha::node::nodes:
+    $node_hostnames:
       user     => $mha::node::user,
       password => $mha::node::password;
   }
@@ -14,7 +17,7 @@ class mha::node::grants {
       user     => $mha::node::repl_user,
       password => $mha::node::repl_password;
 
-    $mha::node::nodes:
+    $node_hostnames:
       user     => $mha::node::repl_user,
       password => $mha::node::repl_password;
   }

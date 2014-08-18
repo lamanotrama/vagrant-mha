@@ -1,6 +1,7 @@
 ---
 mha::manager: 192.168.80.100
 mha::nodes:
-  - 192.168.80.2
-  - 192.168.80.3
-  - 192.168.80.4
+  - hostname: 192.168.80.2
+  - hostname: 192.168.80.3
+  - hostname: 192.168.80.4
+    candidate_master: 1
