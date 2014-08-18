@@ -1,6 +1,6 @@
 ---
-mha::manager: manager001.mha.lan
+mha::manager: 192.168.80.100
 mha::nodes:
-  - node001.mha.lan
-  - node002.mha.lan
-  - node003.mha.lan
+  - 192.168.80.2
+  - 192.168.80.3
+  - 192.168.80.4
