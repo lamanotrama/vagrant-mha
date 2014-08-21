@@ -5,6 +5,13 @@
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.4.0"
 
+warn <<EOT unless File.directory?(".librarian")
+Please run:
+  gem install librarian-puppet
+  librarian-puppet install --path vendor
+
+EOT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box     = "CentOS6.5-x86_64"
   config.vm.box_url = "https://s3-ap-northeast-1.amazonaws.com/paperboy-vagrant-boxes/CentOS-6.5-x86_64-minimal.box"
@@ -25,10 +32,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.manifest_file  = "site.pp"
-    puppet.module_path    = ["modules", "roles"]
-    puppet.options        = "--verbose"
+    puppet.manifests_path    = "manifests"
+    puppet.manifest_file     = "site.pp"
+    puppet.module_path       = ["modules", "roles", "vendor/modules"]
+    puppet.hiera_config_path = "hiera.yaml"
+
+    options = ["--verbose", "--environment development", "--vardir /vagrant", "--parser future"]
+    options << "--noop"  if ENV['NOOP']
+    options << "--debug" if ENV['DEBUG']
+    puppet.options = options
   end
 
   def define_vbox(c, private_ip: nil, memory: 256, cpu: 2)
@@ -50,11 +62,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define :manager001 do |c|
-    c.vm.host_name  = "manager001.mha.dev"
-    define_vbox c, private_ip: '192.168.80.100'
-  end
-
   config.vm.define :node001 do |c|
     c.vm.host_name  = "node001.mha.dev"
     define_vbox c, private_ip: '192.168.80.2'
@@ -68,5 +75,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :node003 do |c|
     c.vm.host_name  = "node003.mha.dev"
     define_vbox c, private_ip: '192.168.80.4'
+  end
+
+  config.vm.define :manager001 do |c|
+    c.vm.host_name  = "manager001.mha.dev"
+    define_vbox c, private_ip: '192.168.80.100'
   end
 end

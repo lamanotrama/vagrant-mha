@@ -1,36 +1,59 @@
 class mha::node::grants {
 
-  mysql::rights {
-    'all grants manager001':
-      user     => 'root',
-      host     => 'manager001.mha.lan',
-      password => 'percona';
+  $node_hostnames = $mha::node::nodes.collect |$v| { $v['hostname'] }
 
-    'all grants node001':
-      user     => 'root',
-      host     => 'node001.mha.lan',
-      password => 'percona';
+  mha::node::grants::admin {
+    $mha::node::manager:
+      user     => $mha::node::user,
+      password => $mha::node::password;
 
-    'all grants node002':
-      user     => 'root',
-      host     => 'node002.mha.lan',
-      password => 'percona';
-
-    'all grants node003':
-      user     => 'root',
-      host     => 'node003.mha.lan',
-      password => 'percona';
+    $node_hostnames:
+      user     => $mha::node::user,
+      password => $mha::node::password;
   }
 
-  mysql::rights {
-    'repl grants':
-      user     => 'repl',
-      host     => '%',
-      password => 'replication',
-      priv     => [
-        'repl_client_priv',
-        'repl_slave_priv',
-      ];
+  mha::node::grants::repl {
+    $mha::node::manager:
+      user     => $mha::node::repl_user,
+      password => $mha::node::repl_password;
+
+    $node_hostnames:
+      user     => $mha::node::repl_user,
+      password => $mha::node::repl_password;
+  }
+}
+
+define mha::node::grants::admin (
+  $host = $name,
+  $user,
+  $password,
+) {
+  mysql_user { "${user}@${host}":
+    password_hash => mysql_password($password),
   }
 
+  mysql_grant { "${user}@${host}/*.*":
+    user       => "${user}@${host}",
+    table      => '*.*',
+    privileges => ['ALL'],
+  }
+}
+
+define mha::node::grants::repl (
+  $host = $name,
+  $user,
+  $password,
+) {
+  mysql_user { "${user}@${host}":
+    password_hash => mysql_password($password),
+  }
+
+  mysql_grant { "${user}@${host}/*.*":
+    user       => "${user}@${host}",
+    table      => '*.*',
+    privileges => [
+      'REPLICATION SLAVE',
+      'REPLICATION CLIENT',
+    ],
+  }
 }

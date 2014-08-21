@@ -3,3 +3,13 @@
 .vagrant
 .bundle
 vendor/bundle/
+
+# hiera
+reports/
+state/
+clientbucket/
+
+# librarian-puppet
+.librarian
+.tmp
+vendor
