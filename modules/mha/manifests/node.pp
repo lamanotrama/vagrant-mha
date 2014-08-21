@@ -9,6 +9,8 @@ class mha::node (
 
   $nodes,
   $manager,
+
+  $ssh = { 'key_path' => '/root/.ssh/id_rsa_mha' },
 ) inherits mha::params {
 
   class { 'mha::node::install': version => $version }
@@ -16,5 +18,7 @@ class mha::node (
 
   Service['mysql']
   -> Class['mha::node::grants']
+
+  create_resources(mha::ssh_keys, { "mha::node" => $ssh } )
 
 }

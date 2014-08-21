@@ -6,8 +6,6 @@ class mha_node {
   include ::percona::client
   include ::percona::shared
 
-  include ::mha::ssh_keys
-
   class { '::mha::node':
     user          => hiera('mha::user'),
     password      => hiera('mha::password'),

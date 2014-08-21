@@ -5,7 +5,6 @@ class mha_manager {
   include ::percona::client
   include ::percona::shared
 
-  include ::mha::ssh_keys
   include ::mha::manager
 
   ::mha::manager::app { 'app1':

@@ -6,7 +6,9 @@ define mha::manager::app (
   $repl_password,
 
   $nodes,
-  $manage_daemon = false,
+
+  $ssh = { 'key_path' => '/root/.ssh/id_rsa_mha' },
+  $manage_daemon = false
 ) {
 
   $config = "/etc/masterha/${name}.cnf"
@@ -24,6 +26,8 @@ define mha::manager::app (
     owner   => 'root',
     group   => 'root',
   }
+
+  create_resources(mha::ssh_keys, { "mha::app::${name}" => $ssh } )
 
   if $manage_daemon {
     include supervisor
