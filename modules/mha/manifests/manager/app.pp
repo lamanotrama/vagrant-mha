@@ -1,15 +1,17 @@
 define mha::manager::app (
-  $user = 'root',
-  $password,
+  $user          = $mha::params::user,
+  $password      = $mha::params::password,
 
-  $repl_user = 'repl',
-  $repl_password,
+  $repl_user     = $mha::params::repl_user,
+  $repl_password = $mha::params::repl_password,
 
   $nodes,
 
-  $ssh = { 'key_path' => '/root/.ssh/id_rsa' },
+  $ssh = $mha::params::ssh,
   $manage_daemon = false
 ) {
+
+  include mha::params
 
   $config = "/etc/masterha/${name}.cnf"
 

@@ -1,16 +1,16 @@
 class mha::node (
   $version = $mha::params::node_version,
 
-  $user = 'root',
-  $password,
+  $user          = $mha::params::user,
+  $password      = $mha::params::password,
 
-  $repl_user = 'repl',
-  $repl_password,
+  $repl_user     = $mha::params::repl_user,
+  $repl_password = $mha::params::repl_password,
 
   $nodes,
   $manager,
 
-  $ssh = { 'key_path' => '/root/.ssh/id_rsa' },
+  $ssh = $mha::params::ssh,
 ) inherits mha::params {
 
   class { 'mha::node::install': version => $version }
