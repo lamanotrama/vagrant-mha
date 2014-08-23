@@ -8,7 +8,7 @@ Vagrant.require_version ">= 1.4.0"
 warn <<EOT unless File.directory?(".librarian")
 Please run:
   gem install librarian-puppet
-  librarian-puppet install --path vendor
+  librarian-puppet install --path vendor/modules
 
 EOT
 
