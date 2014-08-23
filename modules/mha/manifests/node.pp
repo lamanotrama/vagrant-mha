@@ -10,7 +10,7 @@ class mha::node (
   $nodes,
   $manager,
 
-  $ssh = { 'key_path' => '/root/.ssh/id_rsa_mha' },
+  $ssh = { 'key_path' => '/root/.ssh/id_rsa' },
 ) inherits mha::params {
 
   class { 'mha::node::install': version => $version }

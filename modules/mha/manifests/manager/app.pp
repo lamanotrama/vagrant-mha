@@ -7,7 +7,7 @@ define mha::manager::app (
 
   $nodes,
 
-  $ssh = { 'key_path' => '/root/.ssh/id_rsa_mha' },
+  $ssh = { 'key_path' => '/root/.ssh/id_rsa' },
   $manage_daemon = false
 ) {
 
