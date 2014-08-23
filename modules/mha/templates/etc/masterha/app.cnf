@@ -1,5 +1,5 @@
 [server default]
-ssh_user=root
+ssh_user=<%= @ssh['user'] %>
 ssh_options='-i <%= @ssh['key_path'] %>'
 
 user=<%= @user %>
