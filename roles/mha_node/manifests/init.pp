@@ -7,7 +7,7 @@ class mha_node {
   #  * https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/params.pp
   class { '::mysql::server':
     manage_config_file => false,
-    package_name       => "Percona-Server-server-55.${::hardwaremodel}",
+    package_name       => "Percona-Server-server-55",
     package_ensure     => installed,
     service_name       => 'mysql', # default mysqld
     service_enabled    => true,
@@ -21,7 +21,7 @@ class mha_node {
   }
 
   class { '::mysql::client':
-    package_name   => "Percona-Server-client-55.${::hardwaremodel}",
+    package_name   => "Percona-Server-client-55",
     package_ensure => installed,
   }
 
