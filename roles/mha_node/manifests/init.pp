@@ -2,7 +2,17 @@ class mha_node {
 
   class { 'base': stage => 'first' }
 
-  include ::percona::server
+  # refs:
+  #  * https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/server.pp
+  #  * https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/params.pp
+  class { '::mysql::server':
+    manage_config_file => false,
+    package_name       => "Percona-Server-server-55.${::hardwaremodel}",
+    package_ensure     => installed,
+    service_name       => 'mysql', # default mysqld
+    service_enabled    => true,
+  }
+
   include ::percona::client
   include ::percona::shared
 
@@ -16,7 +26,7 @@ class mha_node {
   }
 
   Class['::Percona::Shared']
-  -> Class['::Percona::Server']
+  -> Class['::mysql::server']
   -> Class['::Mha::Node']
 
 }
