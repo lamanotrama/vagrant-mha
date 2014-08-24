@@ -13,6 +13,13 @@ class mha_node {
     service_enabled    => true,
   }
 
+  file { '/etc/my.cnf':
+    content => template('mha_node/etc/my.cnf'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => 644,
+  }
+
   class { '::mysql::client':
     package_name   => "Percona-Server-client-55.${::hardwaremodel}",
     package_ensure => installed,
@@ -27,7 +34,13 @@ class mha_node {
     nodes         => hiera('mha::nodes'),
   }
 
-  Class['::mysql::server']
+  File['/etc/my.cnf']
+  -> Class['::mysql::server']
   -> Class['::Mha::Node']
+
+  File['/etc/my.cnf']
+  ~> Class['::mysql::server::service']
+
+
 
 }
