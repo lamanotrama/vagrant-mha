@@ -18,8 +18,6 @@ class mha_node {
     package_ensure => installed,
   }
 
-  include ::percona::shared
-
   class { '::mha::node':
     user          => hiera('mha::user'),
     password      => hiera('mha::password'),
@@ -29,8 +27,7 @@ class mha_node {
     nodes         => hiera('mha::nodes'),
   }
 
-  Class['::Percona::Shared']
-  -> Class['::mysql::server']
+  Class['::mysql::server']
   -> Class['::Mha::Node']
 
 }

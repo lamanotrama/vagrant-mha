@@ -7,8 +7,6 @@ class mha_manager {
     package_ensure => installed,
   }
 
-  include ::percona::shared
-
   include ::mha::manager
 
   ::mha::manager::app { 'app1':
