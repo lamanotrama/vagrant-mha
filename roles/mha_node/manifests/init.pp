@@ -13,6 +13,15 @@ class mha_node {
     service_enabled    => true,
   }
 
+  $users_to_purge = [
+    "root@${::fqdn}",
+    "@${::fqdn}",
+  ]
+
+  mysql_user { $users_to_purge:
+    ensure => absent,
+  }
+
   file { '/etc/my.cnf':
     content => template('mha_node/etc/my.cnf'),
     owner   => 'root',
@@ -36,6 +45,7 @@ class mha_node {
 
   File['/etc/my.cnf']
   -> Class['::mysql::server']
+  -> Mysql_user[$users_to_purge]
   -> Class['::Mha::Node']
 
   File['/etc/my.cnf']
