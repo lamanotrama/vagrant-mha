@@ -2,7 +2,11 @@ class mha_manager {
 
   class { 'base': stage => 'first' }
 
-  include ::percona::client
+  class { '::mysql::client':
+    package_name   => "Percona-Server-client-55.${::hardwaremodel}",
+    package_ensure => installed,
+  }
+
   include ::percona::shared
 
   include ::mha::manager

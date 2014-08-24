@@ -16,7 +16,6 @@ class percona::shared {
       require => [
         Class['percona::repository'],
         Package['mysql-libs'],
-        Package['MySQL-client'],
       ];
   }
 

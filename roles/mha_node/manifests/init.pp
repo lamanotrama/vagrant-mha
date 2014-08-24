@@ -13,7 +13,11 @@ class mha_node {
     service_enabled    => true,
   }
 
-  include ::percona::client
+  class { '::mysql::client':
+    package_name   => "Percona-Server-client-55.${::hardwaremodel}",
+    package_ensure => installed,
+  }
+
   include ::percona::shared
 
   class { '::mha::node':
