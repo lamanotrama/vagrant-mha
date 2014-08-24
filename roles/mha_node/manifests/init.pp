@@ -2,6 +2,13 @@ class mha_node {
 
   class { 'base': stage => 'first' }
 
+  file { '/etc/my.cnf':
+    content => template('mha_node/etc/my.cnf'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => 644,
+  }
+
   # refs:
   #  * https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/server.pp
   #  * https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/params.pp
@@ -20,13 +27,6 @@ class mha_node {
 
   mysql_user { $users_to_purge:
     ensure => absent,
-  }
-
-  file { '/etc/my.cnf':
-    content => template('mha_node/etc/my.cnf'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => 644,
   }
 
   class { '::mysql::client':
@@ -50,7 +50,5 @@ class mha_node {
 
   File['/etc/my.cnf']
   ~> Class['::mysql::server::service']
-
-
 
 }
