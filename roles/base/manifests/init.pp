@@ -6,5 +6,7 @@ class base {
   include ::iptables::disable
   include ::selinux::disable
 
+  Yumrepo <| |> -> Package <| |>
+
 }
 
