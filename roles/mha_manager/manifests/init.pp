@@ -1,7 +1,5 @@
 class mha_manager {
 
-  class { 'base': stage => 'first' }
-
   class { '::mysql::client':
     package_name   => "Percona-Server-client-55",
     package_ensure => installed,

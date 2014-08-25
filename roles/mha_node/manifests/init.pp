@@ -1,7 +1,5 @@
 class mha_node {
 
-  class { 'base': stage => 'first' }
-
   file { '/etc/my.cnf':
     content => template('mha_node/etc/my.cnf'),
     owner   => 'root',
