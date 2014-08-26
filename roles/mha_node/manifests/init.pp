@@ -16,15 +16,10 @@ class mha_node {
     package_ensure     => installed,
     service_name       => 'mysql', # default mysqld
     service_enabled    => true,
-  }
-
-  $users_to_purge = [
-    "root@${::fqdn}",
-    "@${::fqdn}",
-  ]
-
-  mysql_user { $users_to_purge:
-    ensure => absent,
+    users              => {
+      "root@${::fqdn}" => { ensure => absent },
+      "@${::fqdn}"     => { ensure => absent },
+    }
   }
 
   class { '::mysql::client':
@@ -43,7 +38,6 @@ class mha_node {
 
   File['/etc/my.cnf']
   -> Class['::mysql::server']
-  -> Mysql_user[$users_to_purge]
   -> Class['::Mha::Node']
 
   File['/etc/my.cnf']
