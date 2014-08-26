@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.module_path       = ["modules", "roles", "vendor/modules"]
     puppet.hiera_config_path = "hiera.yaml"
 
-    options = ["--verbose", "--environment development", "--vardir /vagrant", "--parser future"]
+    options = ["--verbose", "--environment development", "--vardir /vagrant"]
     options << "--noop"  if ENV['NOOP']
     options << "--debug" if ENV['DEBUG']
     puppet.options = options

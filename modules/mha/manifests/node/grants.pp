@@ -1,25 +1,27 @@
 class mha::node::grants {
 
-  $node_hostnames = $mha::node::nodes.collect |$v| { $v['hostname'] }
+  # [
+  #   manager,
+  #   nodes[0]['hostname'],
+  #   nodes[1]['hostname'],
+  #   ...
+  # ]
 
-  mha::node::grants::admin {
-    $mha::node::manager:
-      user     => $mha::node::user,
-      password => $mha::node::password;
+  $hosts = split(inline_template("<%=
+    scope.lookupvar('mha::node::nodes') \
+      .map {|v| v['hostname'] } \
+      .unshift(scope.lookupvar('mha::node::manager')) \
+      .join(',')
+  %>"),',')
 
-    $node_hostnames:
-      user     => $mha::node::user,
-      password => $mha::node::password;
+  mha::node::grants::admin { $hosts:
+    user     => $mha::node::user,
+    password => $mha::node::password;
   }
 
-  mha::node::grants::repl {
-    $mha::node::manager:
-      user     => $mha::node::repl_user,
-      password => $mha::node::repl_password;
-
-    $node_hostnames:
-      user     => $mha::node::repl_user,
-      password => $mha::node::repl_password;
+  mha::node::grants::repl { $hosts:
+    user     => $mha::node::repl_user,
+    password => $mha::node::repl_password;
   }
 }
 
