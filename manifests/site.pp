@@ -1,5 +1,5 @@
 node 'manager001.mha.dev' {
-  class { 'base': stage => 'first' }
+  include base
   include mha_manager
 }
 
