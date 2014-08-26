@@ -14,9 +14,15 @@ class mha::node::grants {
       .join(',')
   %>"),',')
 
-  mha::node::grants::admin { $hosts:
-    user     => $mha::node::user,
-    password => $mha::node::password;
+  mha::node::grants::admin {
+    # for purge_relay_logs. see mha::node::purge_relay_logs
+    '127.0.0.1':
+      user     => $mha::node::user,
+      password => $mha::node::password;
+
+    $hosts:
+      user     => $mha::node::user,
+      password => $mha::node::password;
   }
 
   mha::node::grants::repl { $hosts:

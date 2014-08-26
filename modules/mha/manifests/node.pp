@@ -11,10 +11,8 @@ class mha::node (
   $manager,
 
   $ssh = $mha::params::ssh,
+  $purge_relay_logs_schedule = $mha::params::purge_relay_logs_schedule
 ) inherits mha::params {
-
-  class { 'mha::node::install': version => $version }
-  -> class { 'mha::node::grants': }
 
   # if puppetlabs-mysql is used, and mysql::server class is included with service_manage parameter(default true)
   # ref https://github.com/puppetlabs/puppetlabs-mysql/blob/master/manifests/server/service.pp#L10
@@ -24,9 +22,11 @@ class mha::node (
     $service_name = 'mysql'
   }
 
-  Service[$service_name]
-  -> Class['mha::node::grants']
-
   create_resources(mha::ssh_keys, { "mha::node" => $ssh } )
+
+     Service[$service_name]
+  -> class { 'mha::node::install': version => $version }
+  -> class { 'mha::node::grants': }
+  -> class { 'mha::node::purge_relay_logs': }
 
 }
