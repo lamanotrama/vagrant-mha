@@ -4,11 +4,7 @@ class mha::node::install (
 
   $suffix = mha_pkg_suffix()
 
-  if !defined(Package['perl-DBD-MySQL']) {
-    package { 'perl-DBD-MySQL':
-      ensure => installed,
-    }
-  }
+  ensure_packages('perl-DBD-MySQL')
 
   package {'mha4mysql-node':
     ensure   => installed,

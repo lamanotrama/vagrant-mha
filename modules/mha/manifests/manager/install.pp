@@ -15,7 +15,7 @@ class mha::manager::install {
     'perl-Time-HiRes',
   ]
 
-  mha::manager::install::package { $perl_pkgs: }
+  ensure_packages($perl_pkgs)
 
   package { 'mha4mysql-manager':
     ensure   => installed,
@@ -29,10 +29,3 @@ class mha::manager::install {
 
 }
 
-define mha::manager::install::package {
-  if !defined(Package[$name]) {
-    package { $name:
-      ensure  => installed,
-    }
-  }
-}

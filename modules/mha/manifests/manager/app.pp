@@ -15,12 +15,10 @@ define mha::manager::app (
 
   $config = "/etc/masterha/${name}.cnf"
 
-  if !defined('/etc/masterha') {
-    file { '/etc/masterha':
-      ensure => directory,
-      mode   => 755,
-    }
-  }
+  ensure_resource('file', '/etc/masterha', {
+    ensure => directory,
+    mode   => 755,
+  })
 
   file { $config:
     content => template('mha/etc/masterha/app.cnf'),
