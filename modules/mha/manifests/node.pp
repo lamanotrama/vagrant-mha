@@ -1,16 +1,12 @@
 class mha::node (
-  $version = $mha::params::node_version,
-
+  $manager,
+  $version       = $mha::params::node_version,
+  $nodes         = [],
   $user          = $mha::params::user,
   $password      = $mha::params::password,
-
   $repl_user     = $mha::params::repl_user,
   $repl_password = $mha::params::repl_password,
-
-  $nodes,
-  $manager,
-
-  $ssh = $mha::params::ssh,
+  $ssh           = $mha::params::ssh,
   $purge_relay_logs_schedule = $mha::params::purge_relay_logs_schedule
 ) inherits mha::params {
 
@@ -22,7 +18,7 @@ class mha::node (
     $service_name = 'mysql'
   }
 
-  create_resources(mha::ssh_keys, { "mha::node" => $ssh } )
+  create_resources(mha::ssh_keys, { "mha::node" => $ssh })
 
      Service[$service_name]
   -> class { 'mha::node::install': version => $version }

@@ -38,7 +38,7 @@ class mha_node {
 
   File['/etc/my.cnf']
   -> Class['::mysql::server']
-  -> Class['::Mha::Node']
+  -> Class['::mha::node']
 
   File['/etc/my.cnf']
   ~> Class['::mysql::server::service']

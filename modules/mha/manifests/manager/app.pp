@@ -1,13 +1,10 @@
 define mha::manager::app (
+  $nodes         = [],
   $user          = $mha::params::user,
   $password      = $mha::params::password,
-
   $repl_user     = $mha::params::repl_user,
   $repl_password = $mha::params::repl_password,
-
-  $nodes,
-
-  $ssh = $mha::params::ssh,
+  $ssh           = $mha::params::ssh,
   $manage_daemon = false
 ) {
 
@@ -27,7 +24,7 @@ define mha::manager::app (
     group   => 'root',
   }
 
-  create_resources(mha::ssh_keys, { "mha::app::${name}" => $ssh } )
+  create_resources(mha::ssh_keys, { "mha::app::${name}" => $ssh })
 
   if $manage_daemon {
     include supervisor

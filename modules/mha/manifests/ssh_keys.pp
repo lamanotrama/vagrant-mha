@@ -5,7 +5,7 @@ define mha::ssh_keys (
   $public_key,
 ) {
 
-  ensure_resource(file, $key_path, {
+  ensure_resource('file', $key_path, {
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
@@ -13,7 +13,7 @@ define mha::ssh_keys (
     require => Ssh_authorized_key["mha_ssh_pub ${key_path}"]
   })
 
-  ensure_resource(ssh_authorized_key, "mha_ssh_pub ${key_path}", {
+  ensure_resource('ssh_authorized_key, "mha_ssh_pub ${key_path}", {
     ensure => present,
     user   => 'root',
     type   => 'ssh-rsa',

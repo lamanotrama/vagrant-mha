@@ -3,6 +3,6 @@ class mha::manager (
   $node_version = $mha::params::node_version
 ) inherits mha::params {
 
-  class { 'mha::manager::install': }
+  include mha::manager::install
 
 }
