@@ -303,8 +303,8 @@ sub attach_vip_to_new_master_host {
   ! system qq|set -x; ssh $new_master_host $ssh_options '/sbin/ifconfig $vip_interface $vip netmask $netmask up'|
     or die "failed to up vip on $new_master_host";
 
-  sleep 3;
-  system qq|set -x; ssh $new_master_host $ssh_options 'ping -I $vip -b $broadcast -c 3 -i 0.1 -W 10 > /dev/null'|
+  sleep 1;
+  system qq|set -x; ssh $new_master_host $ssh_options 'arping -U $vip -I $real_if -c 3'|;
 }
 
 
