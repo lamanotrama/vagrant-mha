@@ -13,7 +13,7 @@ define mha::ssh_keys (
     require => Ssh_authorized_key["mha_ssh_pub ${key_path}"]
   })
 
-  ensure_resource('ssh_authorized_key, "mha_ssh_pub ${key_path}", {
+  ensure_resource('ssh_authorized_key', "mha_ssh_pub ${key_path}", {
     ensure => present,
     user   => 'root',
     type   => 'ssh-rsa',
