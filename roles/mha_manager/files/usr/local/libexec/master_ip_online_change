@@ -36,7 +36,11 @@ my (
   $orig_master_password, $orig_master_ssh_user,     $new_master_host,
   $new_master_ip,        $new_master_port,          $new_master_user,
   $new_master_password,  $new_master_ssh_user,
+  $vip,                  $ssh_options,
 );
+
+my $vip_interface = 'eth1:0';
+
 GetOptions(
   'command=s'                => \$command,
   'orig_master_is_new_slave' => \$orig_master_is_new_slave,
@@ -52,6 +56,9 @@ GetOptions(
   'new_master_user=s'        => \$new_master_user,
   'new_master_password=s'    => \$new_master_password,
   'new_master_ssh_user=s'    => \$new_master_ssh_user,
+  'vip=s'                    => \$vip,
+  'vip_interface=s'          => \$vip_interface,
+  'ssh_options=s'            => \$ssh_options,
 );
 
 exit &main();
@@ -141,6 +148,9 @@ sub main {
       }
       $new_master_handler->disconnect();
 
+      # Drop vip from orig master
+      drop_vip_from_orig_master_host();
+
       # Connecting to the orig master, die if any database error happens
       my $orig_master_handler = new MHA::DBHelper();
       $orig_master_handler->connect( $orig_master_ip, $orig_master_port,
@@ -148,8 +158,8 @@ sub main {
 
       ## Drop application user so that nobody can connect. Disabling per-session binlog beforehand
       $orig_master_handler->disable_log_bin_local();
-      print current_time_us() . " Drpping app user on the orig master..\n";
-      FIXME_xxx_drop_app_user($orig_master_handler);
+      # print current_time_us() . " Drpping app user on the orig master..\n";
+      # FIXME_xxx_drop_app_user($orig_master_handler);
 
       ## Waiting for N * 100 milliseconds so that current connections can exit
       my $time_until_read_only = 15;
@@ -242,10 +252,14 @@ sub main {
       $new_master_handler->disable_read_only();
 
       ## Creating an app user on the new master
-      print current_time_us() . " Creating app user on the new master..\n";
-      FIXME_xxx_create_app_user($new_master_handler);
+      #print current_time_us() . " Creating app user on the new master..\n";
+      #FIXME_xxx_create_app_user($new_master_handler);
       $new_master_handler->enable_log_bin_local();
       $new_master_handler->disconnect();
+
+      # Attach vip to new master
+      attach_vip_to_new_master_host();
+      ! system "set -x; ping -c 3 -i 0.1 $vip -W 10" or warn "Maybe failed to attaching vip";
 
       ## Update master ip on the catalog database, etc
       $exit_code = 0;
@@ -272,4 +286,25 @@ sub usage {
 "Usage: master_ip_online_change --command=start|stop|status --orig_master_host=host --orig_master_ip=ip --orig_master_port=port --new_master_host=host --new_master_ip=ip --new_master_port=port\n";
   die;
 }
+
+sub drop_vip_from_orig_master_host {
+  ! system qq|set -x; ssh $orig_master_host $ssh_options '/sbin/ifconfig $vip_interface down'|
+    or die "failed to drop vip on $orig_master_host";
+}
+
+sub attach_vip_to_new_master_host {
+  (my $real_if = $vip_interface) =~ s/:.*//;
+  my $ifconfig = `ssh $new_master_host $ssh_options '/sbin/ifconfig $real_if'`
+    or die "failed to get $real_if info on $new_master_host";
+
+  my ($netmask)   = $ifconfig =~ /Mask:([\d\.]+)/;
+  my ($broadcast) = $ifconfig =~ /Bcast:([\d\.]+)/;
+
+  ! system qq|set -x; ssh $new_master_host $ssh_options '/sbin/ifconfig $vip_interface $vip netmask $netmask up'|
+    or die "failed to up vip on $new_master_host";
+
+  sleep 3;
+  system qq|set -x; ssh $new_master_host $ssh_options 'ping -I $vip -b $broadcast -c 3 -i 0.1 -W 10 > /dev/null'|
+}
+
 
