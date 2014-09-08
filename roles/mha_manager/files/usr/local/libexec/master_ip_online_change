@@ -288,23 +288,31 @@ sub usage {
 }
 
 sub drop_vip_from_orig_master_host {
-  ! system qq|set -x; ssh $orig_master_host $ssh_options '/sbin/ifconfig $vip_interface down'|
-    or die "failed to drop vip on $orig_master_host";
+  remote_command($orig_master_host, "/sbin/ifconfig $vip_interface down")
+    or warn "failed to drop vip on $orig_master_host";
 }
 
 sub attach_vip_to_new_master_host {
   (my $real_if = $vip_interface) =~ s/:.*//;
-  my $ifconfig = `ssh $new_master_host $ssh_options '/sbin/ifconfig $real_if'`
-    or die "failed to get $real_if info on $new_master_host";
+
+  my $ifconfig = qx|ssh $new_master_host $ssh_options '/sbin/ifconfig $real_if'| or do {
+    warn "failed to get $real_if info on $new_master_host";
+    return;
+  };
 
   my ($netmask)   = $ifconfig =~ /Mask:([\d\.]+)/;
   my ($broadcast) = $ifconfig =~ /Bcast:([\d\.]+)/;
 
-  ! system qq|set -x; ssh $new_master_host $ssh_options '/sbin/ifconfig $vip_interface $vip netmask $netmask up'|
-    or die "failed to up vip on $new_master_host";
+  remote_command($new_master_host, "/sbin/ifconfig $vip_interface $vip netmask $netmask up")
+    or warn "failed to up vip on $new_master_host";
 
   sleep 1;
-  system qq|set -x; ssh $new_master_host $ssh_options 'arping -U $vip -I $real_if -c 3'|;
+
+  remote_command($new_master_host, "arping -U $vip -I $real_if -c 3");
 }
 
+sub remote_command {
+  my ($host, $cmd) = @_;
+  ! system qq|set -x; ssh $host $ssh_options '$cmd'|;
+}
 
