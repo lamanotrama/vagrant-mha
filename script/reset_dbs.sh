@@ -33,7 +33,6 @@ for node in $nodes; do
         mysql_install_db
         chmod 755 /var/lib/mysql
         chown -R mysql. /var/lib/mysql
-        mysql_install_db
         service mysql start
     " '
     ) &
