@@ -18,7 +18,12 @@ class mha_manager::script {
 
   file {
     '/usr/local/bin/mysql_connect_test':
-      content => "#!/bin/sh\n\nwhile :; do mysql -BN --connect-timeout=1 -h ${vip} -u ${user} -p${pass} -e 'select sysdate(),@@server_id'; sleep 1; done\n",
+      content => template('mha_manager/usr/local/bin/mysql_connect_test'),
+      owner   => 'root',
+      mode    => 700;
+
+    '/usr/local/bin/mysql_insert_test':
+      content => template('mha_manager/usr/local/bin/mysql_insert_test'),
       owner   => 'root',
       mode    => 700;
   }

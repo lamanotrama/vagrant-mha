@@ -1,0 +1,10 @@
+#!/bin/sh
+
+interval=$1
+: ${interval:=1}
+
+while :;
+do
+    mysql -BN --connect-timeout=1 -h <%= @vip %> -u <%= @user %> -p<%= @pass %> -e 'select sysdate(),@@server_id'
+    sleep $interval
+done

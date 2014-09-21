@@ -1,0 +1,26 @@
+#!/bin/sh
+
+interval=$1
+: ${interval:=1}
+
+run() {
+   mysql -BN --connect-timeout=1 -h <%= @vip %> -u <%= @user %> -p<%= @pass %> <<'SQL'
+CREATE DATABASE IF NOT EXISTS `test`;
+USE test;
+
+CREATE TABLE IF NOT EXISTS `mha_test` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `server_id` int(11) NOT NULL
+);
+
+INSERT INTO `mha_test` (server_id) VALUES (@@server_id);
+SELECT * from `mha_test` ORDER BY `ts` DESC LIMIT 1;
+SQL
+}
+
+while :;
+do
+    run
+    sleep $interval
+done
