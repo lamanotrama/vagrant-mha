@@ -7,7 +7,7 @@ class mha::node (
   $repl_user     = $mha::params::repl_user,
   $repl_password = $mha::params::repl_password,
   $ssh           = $mha::params::ssh,
-  $purge_relay_logs_schedule = $mha::params::purge_relay_logs_schedule
+  $purge_relay_logs_schedule = $mha::params::purge_relay_logs_schedule,
 ) inherits mha::params {
 
   # if puppetlabs-mysql is used, and mysql::server class is included with service_manage parameter(default true)
@@ -18,7 +18,7 @@ class mha::node (
     $service_name = 'mysql'
   }
 
-  create_resources(mha::ssh_keys, { "mha::node" => $ssh })
+  create_resources('mha::ssh_keys', { "mha::node" => $ssh })
 
      Service[$service_name]
   -> class { 'mha::node::install': version => $version }

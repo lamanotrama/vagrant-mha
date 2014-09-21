@@ -7,6 +7,7 @@ node 'node001.mha.dev' {
   $server_id = 1
   include base
   include mha_node
+  include mha_node::vip
 }
 
 node 'node002.mha.dev' {

@@ -11,6 +11,10 @@ repl_password=<%= @repl_password %>
 manager_workdir=/var/log/masterha/<%= @name %>
 remote_workdir=/var/log/masterha/<%= @name %>
 
+<% @default.each do |key, val| -%>
+<%= key %>=<%= val %>
+<% end -%>
+
 <% @nodes.each_with_index do |node, i| -%>
 [server<%= i + 1 %>]
 hostname=<%= node.delete('hostname') %>

@@ -5,6 +5,7 @@ define mha::manager::app (
   $repl_user     = $mha::params::repl_user,
   $repl_password = $mha::params::repl_password,
   $ssh           = $mha::params::ssh,
+  $default       = {},
   $manage_daemon = false
 ) {
 
@@ -33,6 +34,7 @@ define mha::manager::app (
       ensure                 => present,
       enable                 => true,
       command                => "/usr/bin/masterha_manager --conf=${config}",
+      startsecs              => 5,
       autorestart            => true,
       user                   => 'root',
       group                  => 'root',
