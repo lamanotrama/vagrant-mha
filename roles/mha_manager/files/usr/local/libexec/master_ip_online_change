@@ -301,7 +301,6 @@ sub attach_vip_to_new_master_host {
   };
 
   my ($netmask)   = $ifconfig =~ /Mask:([\d\.]+)/;
-  my ($broadcast) = $ifconfig =~ /Bcast:([\d\.]+)/;
 
   remote_command($new_master_host, "/sbin/ifconfig $vip_interface $vip netmask $netmask up")
     or warn "failed to up vip on $new_master_host";
