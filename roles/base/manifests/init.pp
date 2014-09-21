@@ -5,6 +5,7 @@ class base {
   include ::percona_repo
   include ::iptables::disable
   include ::selinux::disable
+  include ::ntp
 
   Yumrepo <| |> -> Package <| |>
 
