@@ -29,8 +29,12 @@ my (
   $command,        $ssh_user,         $orig_master_host,
   $orig_master_ip, $orig_master_port, $new_master_host,
   $new_master_ip,  $new_master_port,  $new_master_user,
-  $new_master_password
+  $new_master_password,
+  $vip,            $ssh_options,
 );
+
+my $vip_interface = 'eth1:0';
+
 GetOptions(
   'command=s'             => \$command,
   'ssh_user=s'            => \$ssh_user,
@@ -42,6 +46,9 @@ GetOptions(
   'new_master_port=i'     => \$new_master_port,
   'new_master_user=s'     => \$new_master_user,
   'new_master_password=s' => \$new_master_password,
+  'vip=s'                 => \$vip,
+  'vip_interface=s'       => \$vip_interface,
+  'ssh_options=s'         => \$ssh_options,
 );
 
 exit &main();
@@ -54,8 +61,8 @@ sub main {
     # invalidate orig_master_ip here.
     my $exit_code = 1;
     eval {
-
-      # updating global catalog, etc
+      # Drop vip from orig master
+      drop_vip_from_orig_master_host();
       $exit_code = 0;
     };
     if ($@) {
@@ -84,13 +91,14 @@ sub main {
       $new_master_handler->disable_read_only();
 
       ## Creating an app user on the new master
-      print "Creating app user on the new master..\n";
-      FIXME_xxx_create_user( $new_master_handler->{dbh} );
+      # print "Creating app user on the new master..\n";
+      # FIXME_xxx_create_user( $new_master_handler->{dbh} );
       $new_master_handler->enable_log_bin_local();
       $new_master_handler->disconnect();
 
       ## Update master ip on the catalog database, etc
-      FIXME_xxx;
+      attach_vip_to_new_master_host();
+      ! system "set -x; ping -c 3 -i 0.1 $vip -W 10" or warn "Maybe failed to attaching vip";
 
       $exit_code = 0;
     };
@@ -103,8 +111,7 @@ sub main {
     exit $exit_code;
   }
   elsif ( $command eq "status" ) {
-
-    # do nothing
+    check_vip();
     exit 0;
   }
   else {
@@ -116,5 +123,54 @@ sub main {
 sub usage {
   print
 "Usage: master_ip_failover --command=start|stop|stopssh|status --orig_master_host=host --orig_master_ip=ip --orig_master_port=port --new_master_host=host --new_master_ip=ip --new_master_port=port\n";
+}
+
+sub drop_vip_from_orig_master_host {
+  remote_command($orig_master_host, "/sbin/ifconfig $vip_interface down")
+    or warn "failed to drop vip on $orig_master_host";
+}
+
+sub attach_vip_to_new_master_host {
+  (my $real_if = $vip_interface) =~ s/:.*//;
+
+  my $ifconfig = qx|ssh $new_master_host $ssh_options '/sbin/ifconfig $real_if'| or do {
+    warn "failed to get $real_if info on $new_master_host";
+    return;
+  };
+
+  my ($netmask)   = $ifconfig =~ /Mask:([\d\.]+)/;
+
+  remote_command($new_master_host, "/sbin/ifconfig $vip_interface $vip netmask $netmask up")
+    or warn "failed to up vip on $new_master_host";
+
+  sleep 1;
+
+  remote_command($new_master_host, "arping -U $vip -I $real_if -c 3");
+}
+
+sub check_vip {
+  (my $real_if = $vip_interface) =~ s/:.*//;
+
+  my $ifconfig = qx|ssh $orig_master_host $ssh_options '/sbin/ifconfig $real_if'| or do {
+    warn "failed to get $real_if info on $orig_master_host";
+    return;
+  };
+
+  my ($netmask)   = $ifconfig =~ /Mask:([\d\.]+)/;
+
+  remote_command($orig_master_host, "/sbin/ifconfig | grep -q '^$vip_interface '")
+    or warn <<EOT;
+
+  WARN: $vip_interface does not extist in current master: $orig_master_host
+  please try below (if called via masterha_check_repl):
+    /sbin/ifconfig $vip_interface $vip netmask $netmask up
+    arping -U $vip -I $real_if -c 3
+
+EOT
+}
+
+sub remote_command {
+  my ($host, $cmd) = @_;
+  ! system qq|set -x; ssh $host $ssh_options '$cmd'|;
 }
 
