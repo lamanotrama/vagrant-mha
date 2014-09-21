@@ -17,7 +17,7 @@ node 'node002.mha.dev' {
 
   # mater_hostは本来不定なので、本番では不要
   class { 'mha_node::start_slave':
-    master  => '192.168.80.2',
+    master  => '192.168.80.11',
     require => Class['mha_node'],
   }
 }
@@ -28,7 +28,7 @@ node 'node003.mha.dev' {
   include mha_node
 
   class { 'mha_node::start_slave':
-    master  => '192.168.80.2',
+    master  => '192.168.80.11',
     require => Class['mha_node'],
   }
 }

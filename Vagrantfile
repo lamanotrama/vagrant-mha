@@ -64,17 +64,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :node001 do |c|
     c.vm.host_name  = "node001.mha.dev"
-    define_vbox c, private_ip: '192.168.80.2'
+    define_vbox c, private_ip: '192.168.80.11'
   end
 
   config.vm.define :node002 do |c|
     c.vm.host_name  = "node002.mha.dev"
-    define_vbox c, private_ip: '192.168.80.3'
+    define_vbox c, private_ip: '192.168.80.12'
   end
 
   config.vm.define :node003 do |c|
     c.vm.host_name  = "node003.mha.dev"
-    define_vbox c, private_ip: '192.168.80.4'
+    define_vbox c, private_ip: '192.168.80.13'
   end
 
   config.vm.define :manager001 do |c|
