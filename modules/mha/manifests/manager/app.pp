@@ -34,6 +34,7 @@ define mha::manager::app (
       ensure                 => present,
       enable                 => true,
       command                => "/usr/bin/masterha_manager --conf=${config}",
+      startsecs              => 5,
       autorestart            => true,
       user                   => 'root',
       group                  => 'root',
