@@ -18,8 +18,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell do |shell|
     shell.inline = <<-'SCRIPT'
-      # mysql-libsが入ってるとconflictするので抜いとく
-      rpm -qi mysql-libs && rpm -e --nodeps mysql-libs
       # cent6で名前解決が遅いの回避
       (tail -n 1 /etc/resolv.conf | egrep 'options single-request-reopen' /etc/resolv.conf) ||
           echo 'options single-request-reopen' >> /etc/resolv.conf
