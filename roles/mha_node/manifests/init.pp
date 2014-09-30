@@ -36,6 +36,10 @@ class mha_node {
     nodes         => hiera('mha::nodes'),
   }
 
+  contain '::mysql::server'
+  contain '::mysql::client'
+  contain '::mha::node'
+
   File['/etc/my.cnf']
   -> Class['::mysql::server']
   -> Class['::mha::node']

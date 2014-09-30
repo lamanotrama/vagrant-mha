@@ -1,11 +1,11 @@
 class base {
 
-  include ::repo_epel
-  include ::mysql_yumrepo
-  include ::percona_repo
-  include ::iptables::disable
-  include ::selinux::disable
-  include ::ntp
+  contain '::repo_epel'
+  contain '::mysql_yumrepo'
+  contain '::percona_repo'
+  contain '::iptables::disable'
+  contain '::selinux::disable'
+  contain '::ntp'
 
   Yumrepo <| |> -> Package <| |>
 
