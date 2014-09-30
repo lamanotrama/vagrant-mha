@@ -1,3 +1,7 @@
+Package {
+  allow_virtual => false,
+}
+
 node 'manager001.mha.dev' {
   include base
   include mha_manager
