@@ -12,4 +12,4 @@ clientbucket/
 # librarian-puppet
 .librarian
 .tmp
-vendor
+vendor/modules
