@@ -4,5 +4,6 @@ class mha::manager (
 ) inherits mha::params {
 
   include mha::manager::install
+  include mha::manager::script
 
 }
