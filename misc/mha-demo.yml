@@ -1,0 +1,28 @@
+# ~/.tmuxinator/mha-demo.yml
+
+name: mha-demo
+root: ./
+
+windows:
+  - vm:
+      layout: df8f,204x59,0,0{94x59,0,0[94x29,0,0,89,94x29,0,30,94],109x59,95,0[109x19,95,0,91,109x19,95,20,92,109x19,95,40,93]}
+      panes:
+        - manager-test:
+          - vagrant ssh manager001
+          - sudo su -
+          - mysql_connect_test
+        - manager-shell:
+          - vagrant ssh manager001
+          - sudo su -
+          - clear
+          - hostname
+        - node001:
+          - vagrant ssh node001
+          - sudo tail -F /var/lib/mysql/error.log
+        - node002:
+          - vagrant ssh node002
+          - sudo tail -F /var/lib/mysql/error.log
+        - node003:
+          - vagrant ssh node003
+          - sudo tail -F /var/lib/mysql/error.log
+  - host-shell: vagrant status
