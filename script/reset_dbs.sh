@@ -28,6 +28,7 @@ for node in $nodes; do
     vagrant ssh $node -c 'sudo sh -c "
         set -e
         set -x
+        ifconfig eth1:0 down || true
         service mysql status && service mysql stop
         rm -rf /var/lib/mysql
         mysql_install_db
