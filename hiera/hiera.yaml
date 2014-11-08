@@ -1,7 +1,7 @@
 ---
 :backends: yaml
 :yaml:
-  :datadir: "%{::settings::vardir}/hiera"
+  :datadir: "/vagrant/hiera"
 :hierarchy:
   - common
   - "%{::environment}"
