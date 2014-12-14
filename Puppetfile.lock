@@ -6,17 +6,27 @@ FORGE
       puppetlabs-apt (>= 1.4.0)
     flakrat-repo_epel (1.0.2)
       puppetlabs-stdlib (>= 2.0.0)
-    proletaryo-supervisor (0.4.0)
+    proletaryo-supervisor (0.5.0)
     puppetlabs-apt (1.6.0)
       puppetlabs-stdlib (>= 2.2.1)
     puppetlabs-mysql (2.3.1)
       puppetlabs-stdlib (>= 3.2.0)
     puppetlabs-stdlib (4.3.2)
 
+GIT
+  remote: git@github.com:lamanotrama/puppet-mha.git
+  ref: master
+  sha: de7e495116e82f81a8496e97123638e36c4c7bad
+  specs:
+    lamanotrama-mha (0.0.1)
+      proletaryo-supervisor (>= 0)
+      puppetlabs-mysql (>= 0)
+      puppetlabs-stdlib (>= 0)
+
 DEPENDENCIES
   aco-mysql_yumrepo (>= 0)
   continuent-percona_repo (>= 0)
   flakrat-repo_epel (>= 0)
-  proletaryo-supervisor (>= 0)
+  lamanotrama-mha (>= 0)
   puppetlabs-mysql (>= 0)
 
