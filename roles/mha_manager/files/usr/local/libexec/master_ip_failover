@@ -24,6 +24,7 @@ use warnings FATAL => 'all';
 
 use Getopt::Long;
 use MHA::DBHelper;
+use POSIX qw(strftime);
 
 my (
   $command,        $ssh_user,         $orig_master_host,
@@ -63,6 +64,7 @@ sub main {
     eval {
       # Drop vip from orig master
       drop_vip_from_orig_master_host();
+      update_banner($orig_master_host, sprintf("I was master db until %s\n", now()));
       $exit_code = 0;
     };
     if ($@) {
@@ -99,6 +101,7 @@ sub main {
       ## Update master ip on the catalog database, etc
       attach_vip_to_new_master_host();
       ! system "set -x; ping -c 3 -i 0.1 $vip -W 10" or warn "Maybe failed to attaching vip";
+      update_banner($new_master_host, master_banner());
 
       $exit_code = 0;
     };
@@ -123,6 +126,35 @@ sub main {
 sub usage {
   print
 "Usage: master_ip_failover --command=start|stop|stopssh|status --orig_master_host=host --orig_master_ip=ip --orig_master_port=port --new_master_host=host --new_master_ip=ip --new_master_port=port\n";
+}
+
+sub now {
+  strftime("%F %R", localtime());
+}
+
+sub update_banner {
+  my ($host, $banner) = @_;
+  eval {
+    open my $fh, '>', '/tmp/banner' or die $!;
+    print $fh $banner;
+    close $fh or die $!;
+    ! system qq|set -x; scp $ssh_options /tmp/banner ${host}:/etc/motd|
+        or die "failed to update banner\n";
+  };
+  warn $@ if $@;
+}
+
+sub master_banner {
+  sprintf <<'EOT', now();
+ _____ _            ___  ___          _             ____________   _ 
+|_   _( )           |  \/  |         | |            |  _  \ ___ \ | |
+  | | |/ _ __ ___   | .  . | __ _ ___| |_ ___ _ __  | | | | |_/ / | |
+  | |   | '_ ` _ \  | |\/| |/ _` / __| __/ _ \ '__| | | | | ___ \ | |
+ _| |_  | | | | | | | |  | | (_| \__ \ ||  __/ |    | |/ /| |_/ / |_|
+ \___/  |_| |_| |_| \_|  |_/\__,_|___/\__\___|_|    |___/ \____/  (_)
+
+since %s
+EOT
 }
 
 sub drop_vip_from_orig_master_host {
