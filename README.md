@@ -1,8 +1,8 @@
 # Vagrant MHA
 
-## Overview
+Provides environment to try MHA([mysql-master-ha](https://code.google.com/p/mysql-master-ha/)) easily on Vagrant VMs.
 
-MHA([mysql-master-ha](https://code.google.com/p/mysql-master-ha/))を試せる環境をVagrantでお手軽に用意できるやつ。
+## Overview
 
 ![overview](https://cloud.githubusercontent.com/assets/329120/5428286/a0ef9646-8400-11e4-9ddb-29824302ea58.png)
 
